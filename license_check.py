@@ -19,9 +19,11 @@ def analyze_file(config_file, scancode_file, scanned_files_dir):
     if exclude:
         never_check_ext =  exclude.get("extensions", [])
         never_check_langs = exclude.get("langs", [])
+        exclude_list = exclude.get("files", [])
     else:
         never_check_ext = []
         never_check_langs = []
+        exclude_list = []
 
     copyrights = config.get("copyright", {})
     check_copytight = copyrights.get("check", False)
@@ -51,6 +53,11 @@ def analyze_file(config_file, scancode_file, scanned_files_dir):
                 continue
 
             orig_path = str(file['path']).replace(scanned_files_dir, '')
+
+            # Check if the file or directory is in the exclude list
+            if any(excluded in orig_path for excluded in exclude_list):
+                continue
+
             licenses = file['licenses']
             file_type = file.get("file_type")
             kconfig = "Kconfig" in orig_path and file_type in ['ASCII text']

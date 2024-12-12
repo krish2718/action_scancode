@@ -16,4 +16,8 @@ exclude:
     - cfg
   langs:
     - HTML
+  files:
+    - LICENSE
+    - NOTICE
+    - CODEOWNERS
 
